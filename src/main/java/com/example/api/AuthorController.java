@@ -1,6 +1,9 @@
 package com.example.api;
 
 import com.example.business.abstracts.IAuthorService;
+import com.example.core.config.modelMapper.IModelMapperService;
+import com.example.dto.request.AuthorSaveRequest;
+import com.example.dto.response.AuthorResponse;
 import com.example.entities.Author;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -11,15 +14,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/authors")
 public class AuthorController {
     private final IAuthorService authorService;
+    private final IModelMapperService modelMapperService;
 
-    public AuthorController(IAuthorService authorService) {
+    public AuthorController(IAuthorService authorService, IModelMapperService modelMapperService) {
         this.authorService = authorService;
+        this.modelMapperService = modelMapperService;
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Author save(@Valid @RequestBody Author author){
-        return this.authorService.save(author);
+    public AuthorResponse save(@Valid @RequestBody AuthorSaveRequest authorSaveRequest){
+        Author author = this.modelMapperService.forRequest().map(authorSaveRequest,Author.class);
+        Author savedAuthor = this.authorService.save(author);
+        return this.modelMapperService.forResponse().map(savedAuthor,AuthorResponse.class);
     }
 
     @GetMapping("/{id}")
