@@ -27,4 +27,8 @@ public class ResultHelper {
     public static Result ok(){
         return new Result(true,Message.SUCCESS,"200");
     }
+
+    public static Result notFoundError(String message){
+        return new Result(false,message,"404");
+    }
 }

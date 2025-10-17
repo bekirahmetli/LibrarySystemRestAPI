@@ -1,5 +1,7 @@
 package com.example.core.utils;
 
+import com.example.core.exception.NotFoundException;
+import com.example.core.result.Result;
 import com.example.core.result.ResultData;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,4 +22,10 @@ public class GlobalExceptionHandler {
         ResultData<List<String>>resultData = new ResultData<>(false, Message.VALIDATE_ERROR,"400",validationErrorList);
         return new ResponseEntity<>(resultData, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Result>handleNotFoundException(NotFoundException e){
+        return new ResponseEntity<>(ResultHelper.notFoundError(e.getMessage()),HttpStatus.NOT_FOUND);
+    }
+
 }
