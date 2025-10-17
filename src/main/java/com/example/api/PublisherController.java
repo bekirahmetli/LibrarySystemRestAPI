@@ -42,4 +42,18 @@ public class PublisherController {
         PublisherResponse publisherResponse = this.modelMapperService.forResponse().map(publisher,PublisherResponse.class);
         return ResultHelper.success(publisherResponse);
     }
+
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<CursorResponse<PublisherResponse>> cursor(
+            @RequestParam(name = "page",required = false,defaultValue = "0") int page,
+            @RequestParam(name = "pageSize",required = false,defaultValue = "2") int pageSize
+    ){
+        Page<Publisher> publisherPage = this.publisherService.cursor(page,pageSize);
+
+        Page<PublisherResponse> responsePage = publisherPage.map(publisher ->
+                this.modelMapperService.forResponse().map(publisher,PublisherResponse.class)
+        );
+        return ResultHelper.cursor(responsePage);
+    }
 }
