@@ -8,6 +8,7 @@ import com.example.core.utils.ResultHelper;
 import com.example.dto.request.AuthorSaveRequest;
 import com.example.dto.request.AuthorUpdateRequest;
 import com.example.dto.response.AuthorResponse;
+import com.example.dto.response.CursorResponse;
 import com.example.entities.Author;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -44,7 +45,7 @@ public class AuthorController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<Page<AuthorResponse>> cursor(
+    public ResultData<CursorResponse<AuthorResponse>> cursor(
             @RequestParam(name = "page",required = false,defaultValue = "0") int page,
             @RequestParam(name = "pageSize",required = false,defaultValue = "2") int pageSize
     ){
@@ -53,7 +54,7 @@ public class AuthorController {
         Page<AuthorResponse> responsePage = authorPage.map(author ->
            this.modelMapperService.forResponse().map(author,AuthorResponse.class)
         );
-        return new ResultData<>(true,"Liste başarıyla getirildi","200",responsePage);
+        return ResultHelper.cursor(responsePage);
     }
 
     @PutMapping()
