@@ -56,4 +56,13 @@ public class PublisherController {
         );
         return ResultHelper.cursor(responsePage);
     }
+
+    @PutMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<PublisherResponse> update(@Valid @RequestBody PublisherUpdateRequest publisherUpdateRequest){
+        Publisher publisher = this.modelMapperService.forRequest().map(publisherUpdateRequest,Publisher.class);
+        Publisher publisherUpdate = this.publisherService.update(publisher);
+        PublisherResponse publisherResponse = this.modelMapperService.forResponse().map(publisherUpdate,PublisherResponse.class);
+        return ResultHelper.success(publisherResponse);
+    }
 }
