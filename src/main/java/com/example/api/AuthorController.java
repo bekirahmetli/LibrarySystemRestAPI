@@ -42,7 +42,7 @@ public class AuthorController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public Page<AuthorResponse> cursor(
+    public ResultData<Page<AuthorResponse>> cursor(
             @RequestParam(name = "page",required = false,defaultValue = "0") int page,
             @RequestParam(name = "pageSize",required = false,defaultValue = "2") int pageSize
     ){
@@ -51,7 +51,7 @@ public class AuthorController {
         Page<AuthorResponse> responsePage = authorPage.map(author ->
            this.modelMapperService.forResponse().map(author,AuthorResponse.class)
         );
-        return responsePage;
+        return new ResultData<>(true,"Liste başarıyla getirildi","200",responsePage);
     }
 
     @PutMapping()
