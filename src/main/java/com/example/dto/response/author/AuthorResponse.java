@@ -1,4 +1,4 @@
-package com.example.dto.response;
+package com.example.dto.response.author;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
