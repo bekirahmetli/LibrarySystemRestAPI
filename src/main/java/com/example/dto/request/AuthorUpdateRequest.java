@@ -13,12 +13,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AuthorUpdateRequest {
     @NotNull
-    @Positive
+    @Positive(message = "ID pozitif olmalı")
     private int id;
-    @NotNull
+    @NotNull(message = "Author name null olamaz")
     private String  authorName;
-    @NotNull
+    @NotNull(message = "Author birth date null olamaz")
     private LocalDate birthDate;
-    @NotNull
+    @NotNull(message = "Author country null olamaz")
     private String country;
 }
