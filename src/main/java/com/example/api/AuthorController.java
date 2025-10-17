@@ -39,7 +39,7 @@ public class AuthorController {
     public ResultData<AuthorResponse> get(@PathVariable("id") int id){
         Author author = this.authorService.get(id);
         AuthorResponse authorResponse = this.modelMapperService.forResponse().map(author,AuthorResponse.class);
-        return new ResultData<>(true,"Veri getirildi","200",authorResponse);
+        return ResultHelper.success(authorResponse);
     }
 
     @GetMapping()
