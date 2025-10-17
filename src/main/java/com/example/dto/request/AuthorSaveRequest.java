@@ -1,6 +1,7 @@
 package com.example.dto.request;
 
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,10 +13,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthorSaveRequest {
-    @NotNull
+    @NotNull(message = "Author name null olamaz")
     private String  authorName;
-    @NotNull
+    @NotNull(message = "Author birth date null olamaz")
     private LocalDate birthDate;
-    @NotNull
+    @NotNull(message = "Author country null olamaz")
     private String country;
 }
