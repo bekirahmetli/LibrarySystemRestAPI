@@ -38,12 +38,16 @@ public class AuthorController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public Page<Author> cursor(
+    public Page<AuthorResponse> cursor(
             @RequestParam(name = "page",required = false,defaultValue = "0") int page,
             @RequestParam(name = "pageSize",required = false,defaultValue = "2") int pageSize
     ){
         Page<Author> authorPage = this.authorService.cursor(page,pageSize);
-        return authorPage;
+
+        Page<AuthorResponse> responsePage = authorPage.map(author ->
+           this.modelMapperService.forResponse().map(author,AuthorResponse.class)
+        );
+        return responsePage;
     }
 
     @PutMapping()
