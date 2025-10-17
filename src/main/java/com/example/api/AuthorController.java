@@ -4,6 +4,7 @@ import com.example.business.abstracts.IAuthorService;
 import com.example.core.config.modelMapper.IModelMapperService;
 import com.example.core.result.Result;
 import com.example.core.result.ResultData;
+import com.example.core.utils.ResultHelper;
 import com.example.dto.request.AuthorSaveRequest;
 import com.example.dto.request.AuthorUpdateRequest;
 import com.example.dto.response.AuthorResponse;
@@ -30,7 +31,7 @@ public class AuthorController {
         Author author = this.modelMapperService.forRequest().map(authorSaveRequest,Author.class);
         this.authorService.save(author);
         AuthorResponse authorResponse = this.modelMapperService.forResponse().map(author,AuthorResponse.class);
-        return new ResultData<>(true,"Veri eklendi","201",authorResponse);
+        return ResultHelper.created(authorResponse);
     }
 
     @GetMapping("/{id}")
