@@ -63,7 +63,7 @@ public class AuthorController {
         Author author = this.modelMapperService.forRequest().map(authorUpdateRequest,Author.class);
         Author authorUpdate = this.authorService.update(author);
         AuthorResponse authorResponse = this.modelMapperService.forResponse().map(authorUpdate,AuthorResponse.class);
-        return new ResultData<>(true,"Başarıyla güncellendi","200",authorResponse);
+        return ResultHelper.success(authorResponse);
     }
 
     @DeleteMapping("/{id}")
