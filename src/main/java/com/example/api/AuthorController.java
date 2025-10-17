@@ -3,6 +3,7 @@ package com.example.api;
 import com.example.business.abstracts.IAuthorService;
 import com.example.core.config.modelMapper.IModelMapperService;
 import com.example.dto.request.AuthorSaveRequest;
+import com.example.dto.request.AuthorUpdateRequest;
 import com.example.dto.response.AuthorResponse;
 import com.example.entities.Author;
 import jakarta.validation.Valid;
@@ -52,9 +53,10 @@ public class AuthorController {
 
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public Author update(@Valid @RequestBody Author author){
-        authorService.get(author.getId());
-        return this.authorService.update(author);
+    public AuthorResponse update(@Valid @RequestBody AuthorUpdateRequest authorUpdateRequest){
+        Author author = this.modelMapperService.forRequest().map(authorUpdateRequest,Author.class);
+        Author authorUpdate = this.authorService.update(author);
+        return this.modelMapperService.forResponse().map(authorUpdate,AuthorResponse.class);
     }
 
     @DeleteMapping("/{id}")
