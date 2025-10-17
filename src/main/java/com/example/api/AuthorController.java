@@ -70,6 +70,6 @@ public class AuthorController {
     @ResponseStatus(HttpStatus.OK)
     public Result delete(@PathVariable("id") int id){
         this.authorService.delete(id);
-        return new Result(true,"Başarıyla silindi","200");
+        return ResultHelper.ok();
     }
 }
