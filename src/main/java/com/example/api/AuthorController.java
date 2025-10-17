@@ -2,6 +2,7 @@ package com.example.api;
 
 import com.example.business.abstracts.IAuthorService;
 import com.example.core.config.modelMapper.IModelMapperService;
+import com.example.core.result.ResultData;
 import com.example.dto.request.AuthorSaveRequest;
 import com.example.dto.request.AuthorUpdateRequest;
 import com.example.dto.response.AuthorResponse;
@@ -24,10 +25,11 @@ public class AuthorController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthorResponse save(@Valid @RequestBody AuthorSaveRequest authorSaveRequest){
+    public ResultData<AuthorResponse> save(@Valid @RequestBody AuthorSaveRequest authorSaveRequest){
         Author author = this.modelMapperService.forRequest().map(authorSaveRequest,Author.class);
-        Author savedAuthor = this.authorService.save(author);
-        return this.modelMapperService.forResponse().map(savedAuthor,AuthorResponse.class);
+        this.authorService.save(author);
+        AuthorResponse authorResponse = this.modelMapperService.forResponse().map(author,AuthorResponse.class);
+        return new ResultData<>(true,"Veri eklendi","201",authorResponse);
     }
 
     @GetMapping("/{id}")
