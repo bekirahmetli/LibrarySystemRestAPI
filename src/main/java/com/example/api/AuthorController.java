@@ -31,8 +31,9 @@ public class AuthorController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Author get(@PathVariable("id") int id){
-        return this.authorService.get(id);
+    public AuthorResponse get(@PathVariable("id") int id){
+        Author author = this.authorService.get(id);
+        return this.modelMapperService.forResponse().map(author,AuthorResponse.class);
     }
 
     @GetMapping()
