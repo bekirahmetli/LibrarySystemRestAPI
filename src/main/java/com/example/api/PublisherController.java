@@ -65,4 +65,11 @@ public class PublisherController {
         PublisherResponse publisherResponse = this.modelMapperService.forResponse().map(publisherUpdate,PublisherResponse.class);
         return ResultHelper.success(publisherResponse);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Result delete(@PathVariable("id") int id){
+        this.publisherService.delete(id);
+        return ResultHelper.ok();
+    }
 }
