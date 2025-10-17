@@ -1,5 +1,6 @@
 package com.example.core.utils;
 
+import com.example.core.result.Result;
 import com.example.core.result.ResultData;
 import com.example.dto.response.CursorResponse;
 import org.springframework.data.domain.Page;
@@ -21,5 +22,9 @@ public class ResultHelper {
         cursor.setPageSize(pageData.getSize());
         cursor.setTotalElements(pageData.getTotalElements());
         return ResultHelper.success(cursor);
+    }
+
+    public static Result ok(){
+        return new Result(true,Message.SUCCESS,"200");
     }
 }
