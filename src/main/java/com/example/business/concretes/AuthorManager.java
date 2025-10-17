@@ -2,7 +2,7 @@ package com.example.business.concretes;
 
 import com.example.business.abstracts.IAuthorService;
 import com.example.core.exception.NotFoundException;
-import com.example.core.utils.ExceptionMessage;
+import com.example.core.utils.Message;
 import com.example.dao.AuthorRepo;
 import com.example.entities.Author;
 import org.springframework.data.domain.Page;
@@ -25,7 +25,7 @@ public class AuthorManager implements IAuthorService {
 
     @Override
     public Author get(int id) {
-        return this.authorRepo.findById(id).orElseThrow(() -> new NotFoundException(ExceptionMessage.NOT_FOUND));
+        return this.authorRepo.findById(id).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
     }
 
     @Override

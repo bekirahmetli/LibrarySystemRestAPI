@@ -1,6 +1,6 @@
 package com.example.core.utils;
 
-public class ExceptionMessage {
+public class Message {
     public static final String CREATED = "Kayıt eklendi";
     public static final String VALIDATE_ERROR = "Veri doğrulama hatası";
     public static final String SUCCESS = "İşlem başarılı";
