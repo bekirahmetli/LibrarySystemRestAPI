@@ -56,10 +56,11 @@ public class AuthorController {
 
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public AuthorResponse update(@Valid @RequestBody AuthorUpdateRequest authorUpdateRequest){
+    public ResultData<AuthorResponse> update(@Valid @RequestBody AuthorUpdateRequest authorUpdateRequest){
         Author author = this.modelMapperService.forRequest().map(authorUpdateRequest,Author.class);
         Author authorUpdate = this.authorService.update(author);
-        return this.modelMapperService.forResponse().map(authorUpdate,AuthorResponse.class);
+        AuthorResponse authorResponse = this.modelMapperService.forResponse().map(authorUpdate,AuthorResponse.class);
+        return new ResultData<>(true,"Başarıyla güncellendi","200",authorResponse);
     }
 
     @DeleteMapping("/{id}")
