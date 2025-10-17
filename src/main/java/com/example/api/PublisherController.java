@@ -34,4 +34,12 @@ public class PublisherController {
         PublisherResponse publisherResponse = this.modelMapperService.forResponse().map(publisherSave,PublisherResponse.class);
         return ResultHelper.created(publisherResponse);
     }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<PublisherResponse> get(@PathVariable("id") int id){
+        Publisher publisher = this.publisherService.get(id);
+        PublisherResponse publisherResponse = this.modelMapperService.forResponse().map(publisher,PublisherResponse.class);
+        return ResultHelper.success(publisherResponse);
+    }
 }
