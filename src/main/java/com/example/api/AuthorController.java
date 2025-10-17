@@ -2,6 +2,7 @@ package com.example.api;
 
 import com.example.business.abstracts.IAuthorService;
 import com.example.core.config.modelMapper.IModelMapperService;
+import com.example.core.result.Result;
 import com.example.core.result.ResultData;
 import com.example.dto.request.AuthorSaveRequest;
 import com.example.dto.request.AuthorUpdateRequest;
@@ -65,9 +66,8 @@ public class AuthorController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public boolean delete(@PathVariable("id") int id){
-        Author author = this.authorService.get(id);
-        this.authorService.delete(author.getId());
-        return true;
+    public Result delete(@PathVariable("id") int id){
+        this.authorService.delete(id);
+        return new Result(true,"Başarıyla silindi","200");
     }
 }
