@@ -5,6 +5,7 @@ import com.example.core.config.modelMapper.IModelMapperService;
 import com.example.core.result.ResultData;
 import com.example.core.utils.ResultHelper;
 import com.example.dto.request.book.BookSaveRequest;
+import com.example.dto.request.book.BookUpdateRequest;
 import com.example.dto.response.CursorResponse;
 import com.example.dto.response.book.BookResponse;
 import com.example.entities.Book;
@@ -52,5 +53,13 @@ public class BookController {
                 this.modelMapperService.forResponse().map(book,BookResponse.class)
         );
         return ResultHelper.cursor(responsePage);
+    }
+
+    @PutMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<BookResponse> update(@Valid @RequestBody BookUpdateRequest bookUpdateRequest){
+        Book updated = bookService.update(bookUpdateRequest);
+        BookResponse response = modelMapperService.forResponse().map(updated, BookResponse.class);
+        return ResultHelper.success(response);
     }
 }
