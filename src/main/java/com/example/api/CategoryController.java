@@ -5,6 +5,7 @@ import com.example.core.config.modelMapper.IModelMapperService;
 import com.example.core.result.ResultData;
 import com.example.core.utils.ResultHelper;
 import com.example.dto.request.category.CategorySaveRequest;
+import com.example.dto.request.category.CategoryUpdateRequest;
 import com.example.dto.response.CursorResponse;
 import com.example.dto.response.category.CategoryResponse;
 import com.example.entities.Category;
@@ -53,5 +54,14 @@ public class CategoryController {
                 this.modelMapperService.forResponse().map(category,CategoryResponse.class)
         );
         return ResultHelper.cursor(responsePage);
+    }
+
+    @PutMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<CategoryResponse> update(@Valid @RequestBody CategoryUpdateRequest categoryUpdateRequest){
+        Category category = this.modelMapperService.forRequest().map(categoryUpdateRequest,Category.class);
+        Category categoryUpdate = this.categoryService.update(category);
+        CategoryResponse categoryResponse = this.modelMapperService.forResponse().map(categoryUpdate,CategoryResponse.class);
+        return ResultHelper.success(categoryResponse);
     }
 }
