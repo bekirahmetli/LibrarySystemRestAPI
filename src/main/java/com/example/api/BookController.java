@@ -2,6 +2,7 @@ package com.example.api;
 
 import com.example.business.abstracts.IBookService;
 import com.example.core.config.modelMapper.IModelMapperService;
+import com.example.core.result.Result;
 import com.example.core.result.ResultData;
 import com.example.core.utils.ResultHelper;
 import com.example.dto.request.book.BookSaveRequest;
@@ -61,5 +62,12 @@ public class BookController {
         Book updated = bookService.update(bookUpdateRequest);
         BookResponse response = modelMapperService.forResponse().map(updated, BookResponse.class);
         return ResultHelper.success(response);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Result delete(@PathVariable("id") int id){
+        this.bookService.delete(id);
+        return ResultHelper.ok();
     }
 }
