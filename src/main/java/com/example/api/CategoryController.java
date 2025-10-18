@@ -2,6 +2,7 @@ package com.example.api;
 
 import com.example.business.abstracts.ICategoryService;
 import com.example.core.config.modelMapper.IModelMapperService;
+import com.example.core.result.Result;
 import com.example.core.result.ResultData;
 import com.example.core.utils.ResultHelper;
 import com.example.dto.request.category.CategorySaveRequest;
@@ -63,5 +64,12 @@ public class CategoryController {
         Category categoryUpdate = this.categoryService.update(category);
         CategoryResponse categoryResponse = this.modelMapperService.forResponse().map(categoryUpdate,CategoryResponse.class);
         return ResultHelper.success(categoryResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Result delete(@PathVariable("id") int id){
+        this.categoryService.delete(id);
+        return ResultHelper.ok();
     }
 }
