@@ -13,6 +13,7 @@ import com.example.entities.Category;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -67,9 +68,17 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Result delete(@PathVariable("id") int id){
-        this.categoryService.delete(id);
-        return ResultHelper.ok();
+    public ResponseEntity<ResultData<String>> delete(@PathVariable("id") int id) {
+        String message = this.categoryService.delete(id);
+
+        boolean cannotDelete = message != null && message.contains("silinemedi");
+        if (cannotDelete) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(ResultHelper.success(message));
+        }
+
+        return ResponseEntity
+                .ok(ResultHelper.success(message));
     }
 }
