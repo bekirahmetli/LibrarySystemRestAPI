@@ -3,6 +3,7 @@ package com.example.business.concretes;
 import com.example.business.abstracts.ICategoryService;
 import com.example.core.exception.NotFoundException;
 import com.example.core.utils.Message;
+import com.example.dao.BookRepo;
 import com.example.dao.CategoryRepo;
 import com.example.entities.Author;
 import com.example.entities.Category;
@@ -14,9 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CategoryManager implements ICategoryService {
     private final CategoryRepo categoryRepo;
+    private final BookRepo bookRepo;
 
-    public CategoryManager(CategoryRepo categoryRepo) {
+    public CategoryManager(CategoryRepo categoryRepo, BookRepo bookRepo) {
         this.categoryRepo = categoryRepo;
+        this.bookRepo = bookRepo;
     }
 
     @Override
@@ -36,10 +39,16 @@ public class CategoryManager implements ICategoryService {
     }
 
     @Override
-    public boolean delete(int id) {
+    public String delete(int id) {
         Category category = this.get(id);
+
+        boolean hasBooks = bookRepo.existsByCategories_Id(id);
+        if (hasBooks) {
+            return "Bu kategoriye ait kitap var. Bu kategori silinemedi.";
+        }
+
         this.categoryRepo.delete(category);
-        return true;
+        return "Kategori silindi.";
     }
 
     @Override
