@@ -5,9 +5,11 @@ import com.example.core.config.modelMapper.IModelMapperService;
 import com.example.core.result.ResultData;
 import com.example.core.utils.ResultHelper;
 import com.example.dto.request.category.CategorySaveRequest;
+import com.example.dto.response.CursorResponse;
 import com.example.dto.response.category.CategoryResponse;
 import com.example.entities.Category;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +39,19 @@ public class CategoryController {
         Category category = this.categoryService.get(id);
         CategoryResponse categoryResponse = this.modelMapperService.forResponse().map(category,CategoryResponse.class);
         return ResultHelper.success(categoryResponse);
+    }
+
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<CursorResponse<CategoryResponse>> cursor(
+            @RequestParam(name = "page",required = false,defaultValue = "0") int page,
+            @RequestParam(name = "pageSize",required = false,defaultValue = "2") int pageSize
+    ){
+        Page<Category> categoryPage = this.categoryService.cursor(page,pageSize);
+
+        Page<CategoryResponse> responsePage = categoryPage.map(category ->
+                this.modelMapperService.forResponse().map(category,CategoryResponse.class)
+        );
+        return ResultHelper.cursor(responsePage);
     }
 }
