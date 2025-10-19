@@ -5,9 +5,11 @@ import com.example.core.config.modelMapper.IModelMapperService;
 import com.example.core.result.ResultData;
 import com.example.core.utils.ResultHelper;
 import com.example.dto.request.bookborrow.BookBorrowSaveRequest;
+import com.example.dto.response.CursorResponse;
 import com.example.dto.response.bookborrow.BookBorrowResponse;
 import com.example.entities.BookBorrowing;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,5 +38,19 @@ public class BookBorrowController {
         BookBorrowing bookBorrowing = this.bookBorrowService.get(id);
         BookBorrowResponse response = this.modelMapperService.forResponse().map(bookBorrowing,BookBorrowResponse.class);
         return ResultHelper.success(response);
+    }
+
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<CursorResponse<BookBorrowResponse>> cursor(
+            @RequestParam(name = "page",required = false,defaultValue = "0") int page,
+            @RequestParam(name = "pageSize",required = false,defaultValue = "2") int pageSize
+    ){
+        Page<BookBorrowing> bookborrowingPage = this.bookBorrowService.cursor(page,pageSize);
+
+        Page<BookBorrowResponse> responsePage = bookborrowingPage.map(bookBorrowing ->
+                this.modelMapperService.forResponse().map(bookBorrowing,BookBorrowResponse.class)
+        );
+        return ResultHelper.cursor(responsePage);
     }
 }
