@@ -1,10 +1,8 @@
 package com.example.core.config.modelMapper;
 
 import com.example.dto.response.book.BookResponse;
-import com.example.entities.Author;
-import com.example.entities.Book;
-import com.example.entities.Category;
-import com.example.entities.Publisher;
+import com.example.dto.response.bookborrow.BookBorrowResponse;
+import com.example.entities.*;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -40,6 +38,13 @@ public class ModelMapperConfig {
         };
         typeMap.addMappings(m -> m.using(catToIds)
                 .map(Book::getCategories, BookResponse::setCategoryIds));
+
+        TypeMap<BookBorrowing, BookBorrowResponse> bbMap =
+                mapper.createTypeMap(BookBorrowing.class, BookBorrowResponse.class);
+        bbMap.addMappings(m -> m.map(src -> {
+            Book b = src.getBook();
+            return (b != null) ? b.getId() : 0;
+        }, BookBorrowResponse::setBookId));
 
         return mapper;
     }
