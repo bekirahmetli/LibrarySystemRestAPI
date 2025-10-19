@@ -29,4 +29,12 @@ public class BookBorrowController {
         BookBorrowResponse response = modelMapperService.forResponse().map(saved, BookBorrowResponse.class);
         return ResultHelper.created(response);
     }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<BookBorrowResponse> get(@PathVariable("id") int id){
+        BookBorrowing bookBorrowing = this.bookBorrowService.get(id);
+        BookBorrowResponse response = this.modelMapperService.forResponse().map(bookBorrowing,BookBorrowResponse.class);
+        return ResultHelper.success(response);
+    }
 }
